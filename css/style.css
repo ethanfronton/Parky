@@ -1,0 +1,47 @@
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #d7d7d774;
+    transition: background-color 0.3s ease; 
+}
+
+header {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 25px;
+    transition: transform 0.3s ease;
+}
+
+nav ul li:hover {
+    transform: scale(1.1);
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.Layer1 {
+    position:absolute;
+    left:137px;
+    top:77px;
+    width:136px;
+    height:132px;
+    z-index:1;
+}
