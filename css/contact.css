@@ -37,5 +37,8 @@ button:hover {
 }
 
 #contact h2 {
-    color: white; /* Assure que le titre est aussi en blanc */
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: white;
 }

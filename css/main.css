@@ -1,3 +1,4 @@
+
 .image-container {
     position: relative;
     width: 100%;
@@ -22,7 +23,39 @@
     color: white;
     z-index: 2;
     font-size: 6em; 
-    text-align: center;
-    font-family: Arial, sans-serif; 
+    text-align: center; 
     font-weight: bold;
+}
+
+.search-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #000000;
+    border-radius: 50px;
+    outline: none;
+    transition: all 0.4s ease;
+}
+
+.search-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
 }
