@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/contact.css">
     <link rel="stylesheet" href="../css/main.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <script src="../js/script.js"></script>
 </head>
 
 <header>
@@ -19,15 +17,21 @@
         <ul class="nav-links">
             <li><a href="Home">Home</a></li>
             <li><a href="Mes reservation">Mes réservations</a></li>
-            <li><a href=#contact>contact</a></li>
+            <li><a href=#contact>Contact</a></li>
         </ul>
-        <div class="utilisateur">
-            <a href="utilisateur"><img src="../images/id.png" alt="id"></a>
+        <img src="../images/id.png" alt="id" id="toggleNavImg">
+        <div id="verticalNav" class="vertical-nav">
+                <a href="#id">Identification</a>
+                <a href="#services">Services</a>
+                <a href="#about">À propos</a>
+                <a href="#mes parky">Mes parky</a>
+        </div>
         </div>
     </nav>
 </header>
 
 <body>
+    <script src="../js/script.js"></script>
     <div class="image-container">
         <h1>PARKY</h1>
         <img src="../images/background.jpg" alt="Description de l'image">
