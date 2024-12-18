@@ -1,61 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Parky</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/contact.css">
-    <link rel="stylesheet" href="../css/main.css">
-</head>
-
-<header>
-    <nav class="container">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/contact.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="container">
         <div class="logo">
-            <img src="../images/logo.png" alt="logo">
+          <img src="/images/logo.png" alt="logo" />
         </div>
         <ul class="nav-links">
-            <li><a href="Home">Home</a></li>
-            <li><a href="Mes reservation">Mes réservations</a></li>
-            <li><a href=#contact>Contact</a></li>
+          <li><a href="#Home">Accueil</a></li>
+          <li><a href="/html/resa.html">Mes réservations</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
-        <img src="../images/id.png" alt="id" id="toggleNavImg">
+        <img src="/images/id.png" alt="id" id="toggleNavImg" />
         <div id="verticalNav" class="vertical-nav">
-                <a href="#id">Identification</a>
-                <a href="#services">Services</a>
-                <a href="#about">À propos</a>
-                <a href="#mes parky">Mes parky</a>
+          <a href="/html/id.html">Identification</a>
+          <a href="/html/about.html">À propos</a>
+          <a href="#mes parky">Mes parky</a>
         </div>
-        </div>
-    </nav>
-</header>
+      </nav>
+    </header>
 
-<body>
-    <script src="../js/script.js"></script>
     <div class="image-container">
-        <h1>PARKY</h1>
-        <img src="../images/background.jpg" alt="Description de l'image">
-        <div class="search-container">
-            <form action="#" method="GET">
-                <input type="text" class="search-input" placeholder="Rechercher...">
-                <button type="submit" class="search-button">
-                </button>
-            </form>
-        </div>
-    </div>
-    
-    <section id="contact">
-        <h2>Contact</h2>
-        <form id="contactForm">
-            <input type="text" id="name" placeholder="Nom" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <textarea id="message" placeholder="Votre message" required></textarea>
-            <button type="submit">Envoyer</button>
+      <h1>PARKY</h1>
+      <img src="/images/background.jpg" alt="Description de l'image" />
+      <div class="search-container">
+        <form action="#" method="GET">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="trouve ta place..."
+          />
+          <button type="submit" class="search-button"></button>
         </form>
+      </div>
+    </div>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Nom" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <textarea id="message" placeholder="Votre message" required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
     </section>
 
     <footer>
-        <p>&copy; 2024 Parky</p>
+      <p>&copy; 2024 Parky</p>
     </footer>
-    
-</body>
+
+    <script src="/js/script.js"></script>
+  </body>
+</html>
