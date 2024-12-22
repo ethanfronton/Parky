@@ -2,26 +2,28 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
+app.use(express.json());
+
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/html/index.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "html/index.html"));
+app.get("/html/:page", (req, res) => {
+  const page = req.params.page;
+  res.sendFile(path.join(__dirname, "html", page));
 });
 
-app.get("/html/resa.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "html/resa.html"));
+const parkings = [
+  { id: 1, name: "Place 1", location: "Centre-ville", price: 10 },
+  { id: 2, name: "Place 2", location: "Gare", price: 8 },
+];
+
+app.get("/api/parkings", (req, res) => {
+  res.json(parkings);
 });
 
-app.get("/html/about.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "html/about.html"));
-});
-
-app.get("/html/id.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "html/id.html"));
-});
-
-app.get("/html/register.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "html/register.html"));
+app.post("/api/parkings", (req, res) => {
+  const newParking = req.body;
+  parkings.push(newParking);
+  res.status(201).json(newParking);
 });
 
 app.listen(3001, () => {
