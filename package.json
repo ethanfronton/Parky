@@ -1,0 +1,27 @@
+{
+  "name": "parky",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/ethanfronton/Parky#readme",
+  "bugs": {
+    "url": "https://github.com/ethanfronton/Parky/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanfronton/Parky.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "express.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
+}
