@@ -3,8 +3,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
+const path = require("path");
+const rootRoutes = require("./routes/root");
 
 const app = express();
+app.use(express.static(path.join(__dirname, "public"))); // Ajoutez cette ligne
+app.use("/", rootRoutes);
 
 // Middleware
 app.use(cors());
@@ -14,7 +18,6 @@ app.use(bodyParser.json());
 mongoose.connect('mongodb://127.0.0.1:27017/parky')
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('Could not connect to MongoDB:', err));
-
 
 // Modèle utilisateur
 const UserSchema = new mongoose.Schema({
@@ -71,4 +74,3 @@ app.post("/login", async (req, res) => {
 
 // Lancer le serveur
 app.listen(3000, () => console.log("Serveur en écoute sur le port 3000"));
-
