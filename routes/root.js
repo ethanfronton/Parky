@@ -7,27 +7,27 @@ router.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "index.html"));
 });
 
-router.get("/index.html", (req, res) => {
+router.get("/home", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "index.html"));
 });
 
-router.get("/resa.html", (req, res) => {
+router.get("/reservation", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "resa.html"));
 });
 
-router.get("/id.html", (req, res) => {
+router.get("/identification", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "id.html"));
 });
 
-router.get("/register.html", (req, res) => {
+router.get("/signup", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "register.html"));
 });
 
-router.get("/mesParky.html", (req, res) => {
+router.get("/my-parky", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "mesParky.html"));
 });
 
-router.get("/about.html", (req, res) => {
+router.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "about.html"));
 });
 
