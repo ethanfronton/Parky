@@ -11,9 +11,10 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     });
 
     const data = await response.json();
-    
+
     if (response.ok) {
-        localStorage.setItem("user", JSON.stringify({ email })); // Stocker l'utilisateur AVANT redirection
+        // Stocker le token JWT dans localStorage
+        localStorage.setItem("token", data.token);
         alert("Connexion réussie !");
         window.location.href = "../html/index.html"; // Redirection
     } else {
