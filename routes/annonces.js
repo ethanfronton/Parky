@@ -1,12 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const Annonce = require("../models/champs.js");
-const auth = require("../middlewares/auth.js"); // Importer le middleware d'authentification
+const auth = require("../middlewares/auth.js");
+const upload = require("../middlewares/upload.js");  // Importer le middleware d'upload
 
-// 🔹 Ajouter une annonce
-router.post("/", auth, async (req, res) => { // Utiliser le middleware auth ici
+// 🔹 Ajouter une annonce avec image
+router.post("/", auth, upload, async (req, res) => {
   try {
-    const annonce = new Annonce({ ...req.body, proprietaire_id: req.user.id });
+    // Si une image a été téléchargée, on ajoute l'URL de l'image à l'annonce
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const annonce = new Annonce({
+      ...req.body,
+      proprietaire_id: req.user.id,
+      image: imageUrl // Ajout de l'image dans le modèle
+    });
+
     await annonce.save();
     res.status(201).json(annonce);
   } catch (error) {
@@ -36,7 +45,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // 🔹 Modifier une annonce
-router.put("/:id", auth, async (req, res) => { // Utiliser le middleware auth ici aussi
+router.put("/:id", auth, async (req, res) => {
   try {
     const annonce = await Annonce.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!annonce) return res.status(404).json({ message: "Annonce non trouvée" });
@@ -47,7 +56,7 @@ router.put("/:id", auth, async (req, res) => { // Utiliser le middleware auth ic
 });
 
 // 🔹 Supprimer une annonce
-router.delete("/:id", auth, async (req, res) => { // Et ici aussi
+router.delete("/:id", auth, async (req, res) => {
   try {
     const annonce = await Annonce.findByIdAndDelete(req.params.id);
     if (!annonce) return res.status(404).json({ message: "Annonce non trouvée" });

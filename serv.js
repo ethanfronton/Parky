@@ -8,11 +8,12 @@ const path = require("path");
 const rootRoutes = require("./routes/root");
 const authRoutes = require("./routes/auth");
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 const app = express();
 app.use(express.static(path.join(__dirname, "public"))); // Ajoutez cette ligne
 app.use("/", rootRoutes);
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
