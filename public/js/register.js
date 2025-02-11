@@ -14,8 +14,8 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     
     if (response.ok) {
         alert("Inscription réussie !");
-        localStorage.setItem("user", JSON.stringify({ email })); // Stocker l'utilisateur
-        window.location.href = "../html/index.html"; // Redirection
+        localStorage.setItem("user", JSON.stringify({ email }));
+        window.location.href = "../html/index.html";
     } else {
         alert(data.message);
     }
