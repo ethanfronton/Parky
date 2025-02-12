@@ -36,7 +36,7 @@
                 <input type="text" class="form-control" id="titre" required>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">description</label>
+                <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" id="description" required>
             </div>
             <div class="mb-3">
@@ -51,25 +51,19 @@
                 <label for="prix" class="form-label">Prix (€ par jour)</label>
                 <input type="number" class="form-control" id="prix" required>
             </div>
-            <div>
-                <label for="type" class="form-label">Type de place</label>
-                <select class="form-select" id="type" required>
-                    <option value="0">Intérieur</option>
-                    <option value="1">Extérieur</option>
-                </select>
-            </div>
             <div class="mb-3">
                 <label for="imageUrl" class="form-label">Lien de l'image</label>
                 <input type="url" class="form-control" id="imageUrl" required>
             </div>
-            <div class = "mb-3">
-                <label for = "durée" class = "form-label">Durée de location en jours</label>
-                <input type = "number" class = "form-control" id = "durée" required>
+            <div class="mb-3">
+                <label for="duree" class="form-label">Durée de location en jours</label>
+                <input type="number" class="form-control" id="duree" required>
             </div>
+            <input type="hidden" id="proprietaire_id" value="679b5942d9f5bf64be934a46"> <!-- Remplacez par un ObjectId valide -->
             <button type="submit" class="btn btn-primary w-100">Créer</button>
         </form>
+        <div id="annoncesContainer"></div>
     </div>
-    <script src="../js/mesParky.js"></script>
-    <script src="../js/mesParky.js"></script>
+    <script src="../js/annonces.js"></script>
 </body>
 </html>

@@ -9,7 +9,8 @@ const annonceSchema = new mongoose.Schema({
     adresse: { type: String, required: true },
     ville: { type: String, required: true },
     proprietaire_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    image: { type: String, required: false }  // Champ pour stocker l'URL de l'image
+    image: { type: String, required: false },
+    duree: { type: Number, required: true }
 });
 
 module.exports = mongoose.model('Annonce', annonceSchema);
