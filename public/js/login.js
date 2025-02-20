@@ -34,6 +34,9 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             if (userResponse.ok) {
                 console.log("Utilisateur connecté:", userData);
 
+                // Stocker l'ID utilisateur dans le localStorage
+                localStorage.setItem("userId", userData._id);
+
                 // Vérifie si on récupère bien un email
                 if (userData.email) { 
                     alert(`Connecté en tant que : ${userData.email}`);

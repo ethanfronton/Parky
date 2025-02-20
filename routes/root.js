@@ -31,4 +31,7 @@ router.get("/about", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "html", "about.html"));
 });
 
+router.get("/mes-annonces", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "html", "mesAnnonces.html"));
+});
 module.exports = router;

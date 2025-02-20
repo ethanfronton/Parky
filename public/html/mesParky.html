@@ -23,6 +23,7 @@
                 <a href="/identification">Identification</a>
                 <a href="/about">À propos</a>
                 <a href="/my-parky">Mes parky</a>
+                <a href="/mes-annonces">Mes annonces</a>
         </div>
         </div>
     </nav>
@@ -59,11 +60,17 @@
                 <label for="duree" class="form-label">Durée de location en jours</label>
                 <input type="number" class="form-control" id="duree" required>
             </div>
-            <input type="hidden" id="proprietaire_id" value="679b5942d9f5bf64be934a46"> <!-- Remplacez par un ObjectId valide -->
+            <input type="hidden" id="proprietaire_id" value=""> <!-- Remplacez par un ObjectId valide -->
             <button type="submit" class="btn btn-primary w-100">Créer</button>
         </form>
         <!-- <div id="annoncesContainer"></div>
     </div> -->
     <script src="../js/annonces.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        document.getElementById("proprietaire_id").value = userId;
+      });
+    </script>
 </body>
 </html>

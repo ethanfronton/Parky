@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
         const newUser = new User({ email, password: hashedPassword });
         await newUser.save();
 
-        res.status(201).json({ message: "Inscription réussie !" });
+        res.status(201).json({ message: "Inscription réussie !", userId: newUser._id });
     } catch (err) {
         res.status(500).json({ error: "Erreur serveur" });
     }
@@ -71,7 +71,5 @@ router.get("/me", auth, async (req, res) => {
         res.status(500).json({ error: "Erreur serveur" });
     }
 });
-
-
 
 module.exports = router;

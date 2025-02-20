@@ -29,46 +29,15 @@
         </div>
       </nav>
     </header>
-
-    <div class="image-container">
-      <h1>PARKY</h1>
-      <img src="/images/background.jpg" alt="Description de l'image" />
-      <div class="search-container">
-        <form action="#" method="GET">
-          <input
-            type="text"
-            class="search-input"
-            placeholder="trouve ta place..."
-          />
-          <button type="submit" class="search-button"></button>
-        </form>
-      </div>
-    </div>
-    
     <div class="container mt-5" id="annoncesContainer">
-      <!-- Les annonces seront affichées ici -->
+      <!-- Les annonces de l'utilisateur seront affichées ici -->
     </div>
-    
-    <section id="contact">
-      <h2>Contact</h2>
-      <form id="contactForm">
-        <input type="text" id="name" placeholder="Nom" required />
-        <input type="email" id="email" placeholder="Email" required />
-        <textarea id="message" placeholder="Votre message" required></textarea>
-        <button type="submit">Envoyer</button>
-      </form>
-    </section>
-
-    <footer>
-      <p>&copy; 2024 Parky</p>
-    </footer>
-
-    <!-- Ajout des scripts à la fin pour éviter les erreurs de chargement -->
     <script src="/js/script.js"></script>
     <script src="/js/annonces.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        afficherAnnonces();
+        const userId = localStorage.getItem("userId"); // Assurez-vous que l'ID utilisateur est stocké dans le localStorage
+        afficherAnnonces(userId);
       });
     </script>
   </body>
