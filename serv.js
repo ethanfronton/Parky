@@ -7,20 +7,20 @@ const path = require("path");
 const rootRoutes = require("./routes/root");
 const authRoutes = require("./routes/auth");
 const app = express();
-const router = express.Router();
 const session = require("express-session");
 const auth = require("./middlewares/auth");
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/", rootRoutes);
+
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/", rootRoutes);
 
 // Connexion à MongoDB  
 mongoose
   .connect("mongodb://127.0.0.1:27017/parky")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB:", err));
-  
+
 const annonceSchema = new mongoose.Schema({
     titre: { type: String, required: true },
     description: { type: String, required: true },

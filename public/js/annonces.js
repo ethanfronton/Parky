@@ -1,7 +1,13 @@
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM chargé, affichage des annonces...");
+  afficherAnnonces();
+});
+
+// Gestion du formulaire d'ajout d'annonce
 document
   .getElementById("createParkingForm")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault(); // Empêche le rechargement de la page
+  ?.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
     const titre = document.getElementById("titre");
     const description = document.getElementById("description");
@@ -12,36 +18,8 @@ document
     const duree = document.getElementById("duree");
     const proprietaire_id = document.getElementById("proprietaire_id");
 
-    if (!titre) {
-      console.error("L'élément titre est introuvable.");
-      return;
-    }
-    if (!description) {
-      console.error("L'élément description est introuvable.");
-      return;
-    }
-    if (!adresse) {
-      console.error("L'élément adresse est introuvable.");
-      return;
-    }
-    if (!ville) {
-      console.error("L'élément ville est introuvable.");
-      return;
-    }
-    if (!prix) {
-      console.error("L'élément prix est introuvable.");
-      return;
-    }
-    if (!imageUrl) {
-      console.error("L'élément imageUrl est introuvable.");
-      return;
-    }
-    if (!duree) {
-      console.error("L'élément duree est introuvable.");
-      return;
-    }
-    if (!proprietaire_id) {
-      console.error("L'élément proprietaire_id est introuvable.");
+    if (!titre || !description || !adresse || !ville || !prix || !imageUrl || !duree || !proprietaire_id) {
+      console.error("Un ou plusieurs champs du formulaire sont introuvables.");
       return;
     }
 
@@ -56,41 +34,58 @@ document
       proprietaire_id: proprietaire_id.value,
     };
 
-    console.log("Données envoyées:", annonce); // Ajoutez ce log pour vérifier les données
-
-    // Envoie des données à l'API
     try {
       const response = await fetch("http://localhost:3000/api/annonces", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(annonce),
       });
 
       if (response.ok) {
-        afficherAnnonces(); // Recharge les annonces après ajout
+        alert("Annonce créée avec succès !");
+        afficherAnnonces();
       } else {
-        console.error("Erreur lors de l'envoi des données:", response.statusText);
+        const data = await response.json();
+        alert(`Erreur: ${data.message}`);
       }
     } catch (error) {
-      console.error("Erreur lors de la requête:", error);
+      console.error("Erreur lors de la création de l'annonce:", error);
+      alert("Erreur lors de la création de l'annonce");
     }
   });
 
 // Fonction pour afficher les annonces
 async function afficherAnnonces() {
+  const container = document.getElementById("annoncesContainer");
+
+  if (!container) {
+    console.error("L'élément #annoncesContainer est introuvable !");
+    return;
+  }
+
   try {
+    container.innerHTML = "<p>Chargement des annonces...</p>";
     const response = await fetch("http://localhost:3000/api/annonces");
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des annonces");
     }
     const annonces = await response.json();
+    console.log("Annonces récupérées:", annonces);
 
-    const container = document.getElementById("annoncesContainer");
-    container.innerHTML = ""; // Efface l'affichage précédent
-
+    container.innerHTML = "";
     annonces.forEach((annonce) => {
       const div = document.createElement("div");
-      div.innerHTML = `<h3>${annonce.titre}</h3><p>${annonce.description}</p><p>${annonce.adresse}</p><p>${annonce.prix}€</p> <img src="${annonce.image}" alt="Image de l'annonce" style="width: 100px; height: 100px;">`;
+      div.className = "annonce";
+      div.innerHTML = `
+        <h3>${annonce.titre}</h3>
+        <p>${annonce.description}</p>
+        <p>${annonce.adresse}</p>
+        <p class="prix">${annonce.prix}€</p>
+        <img src="${annonce.image}" alt="Image de l'annonce">
+        <button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>
+      `;
       container.appendChild(div);
     });
   } catch (error) {
@@ -98,5 +93,51 @@ async function afficherAnnonces() {
   }
 }
 
-// Charger les annonces au chargement de la page
-document.addEventListener("DOMContentLoaded", afficherAnnonces);
+// Fonction pour supprimer une annonce
+async function supprimerAnnonce(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Vous devez être connecté pour supprimer une annonce !");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
+      method: "DELETE",
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (response.ok) {
+      alert("Annonce supprimée avec succès !");
+      afficherAnnonces();
+    } else {
+      const data = await response.json();
+      alert(`Erreur: ${data.message}`);
+    }
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'annonce:", error);
+    alert("Erreur lors de la suppression de l'annonce");
+  }
+}
+
+// Route pour supprimer une annonce
+app.delete('/api/annonces/:id', auth, async (req, res) => {
+  try {
+    const annonce = await Annonce.findById(req.params.id);
+
+    if (!annonce) {
+      return res.status(404).json({ message: "Annonce non trouvée" });
+    }
+
+    // Vérifiez que l'utilisateur connecté est le propriétaire de l'annonce
+    if (annonce.proprietaire_id.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Vous n'êtes pas autorisé à supprimer cette annonce" });
+    }
+
+    await annonce.remove();
+    res.json({ message: "Annonce supprimée avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de l'annonce:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
