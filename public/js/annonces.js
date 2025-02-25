@@ -94,3 +94,33 @@ async function afficherAnnonces(userId = null) {
     console.error("Erreur lors de l'affichage des annonces:", error);
   }
 }
+async function supprimerAnnonce(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+      alert("Vous devez être connecté pour supprimer une annonce.");
+      return;
+  }
+
+  if (!confirm("Voulez-vous vraiment supprimer cette annonce ?")) return;
+
+  try {
+      const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+          }
+      });
+
+      if (response.ok) {
+          alert("Annonce supprimée avec succès !");
+          afficherAnnonces();
+      } else {
+          const data = await response.json();
+          alert(`Erreur: ${data.message}`);
+      }
+  } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
+      alert("Erreur lors de la suppression");
+  }
+}

@@ -7,7 +7,7 @@ const path = require("path");
 const rootRoutes = require("./routes/root");
 const authRoutes = require("./routes/auth");
 const app = express();
-const session = require("express-session");
+
 const auth = require("./middlewares/auth");
 
 app.use(cors());
@@ -45,5 +45,24 @@ app.get('/api/annonces', async (req, res) => {
   res.json(annonces);
 });
 
+app.delete('/api/annonces/:id', auth, async (req, res) => {
+  try {
+      const annonce = await Annonce.findById(req.params.id);
+
+      if (!annonce) {
+          return res.status(404).json({ message: "Annonce non trouvée" });
+      }
+
+      // Vérifie si l'utilisateur est bien le propriétaire de l'annonce
+      if (annonce.proprietaire_id.toString() !== req.user.id) {
+          return res.status(403).json({ message: "Suppression non autorisée" });
+      }
+
+      await Annonce.findByIdAndDelete(req.params.id);
+      res.json({ message: "Annonce supprimée avec succès" });
+  } catch (error) {
+      res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 app.use(authRoutes);
 app.listen(3000, () => console.log("Serveur en écoute sur le port 3000"));
