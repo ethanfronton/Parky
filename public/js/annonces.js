@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM chargé, affichage des annonces...");
-  afficherAnnonces();
+  const userId = localStorage.getItem("userId"); // Assurez-vous que l'ID utilisateur est stocké dans le localStorage
+  afficherAnnonces(userId);
 });
 
 // Gestion du formulaire d'ajout d'annonce
@@ -18,7 +19,16 @@ document
     const duree = document.getElementById("duree");
     const proprietaire_id = document.getElementById("proprietaire_id");
 
-    if (!titre || !description || !adresse || !ville || !prix || !imageUrl || !duree || !proprietaire_id) {
+    if (
+      !titre ||
+      !description ||
+      !adresse ||
+      !ville ||
+      !prix ||
+      !imageUrl ||
+      !duree ||
+      !proprietaire_id
+    ) {
       console.error("Un ou plusieurs champs du formulaire sont introuvables.");
       return;
     }
@@ -76,7 +86,7 @@ async function afficherAnnonces(userId = null) {
 
     container.innerHTML = "";
     annonces
-      .filter(annonce => !userId || annonce.proprietaire_id === userId)
+      .filter((annonce) => !userId || annonce.proprietaire_id === userId)
       .forEach((annonce) => {
         const div = document.createElement("div");
         div.className = "annonce";
@@ -86,41 +96,45 @@ async function afficherAnnonces(userId = null) {
           <p>${annonce.adresse}</p>
           <p class="prix">${annonce.prix}€</p>
           <img src="${annonce.image}" alt="Image de l'annonce">
-          <button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>
         `;
+        if (window.location.pathname.includes("mes-annonces")) {
+          div.innerHTML += `<button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>`;
+        }
+
         container.appendChild(div);
       });
   } catch (error) {
     console.error("Erreur lors de l'affichage des annonces:", error);
   }
 }
+
 async function supprimerAnnonce(id) {
   const token = localStorage.getItem("token");
   if (!token) {
-      alert("Vous devez être connecté pour supprimer une annonce.");
-      return;
+    alert("Vous devez être connecté pour supprimer une annonce.");
+    return;
   }
 
   if (!confirm("Voulez-vous vraiment supprimer cette annonce ?")) return;
 
   try {
-      const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
-          method: "DELETE",
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-          }
-      });
+    const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (response.ok) {
-          alert("Annonce supprimée avec succès !");
-          afficherAnnonces();
-      } else {
-          const data = await response.json();
-          alert(`Erreur: ${data.message}`);
-      }
+    if (response.ok) {
+      alert("Annonce supprimée avec succès !");
+      afficherAnnonces();
+    } else {
+      const data = await response.json();
+      alert(`Erreur: ${data.message}`);
+    }
   } catch (error) {
-      console.error("Erreur lors de la suppression:", error);
-      alert("Erreur lors de la suppression");
+    console.error("Erreur lors de la suppression:", error);
+    alert("Erreur lors de la suppression");
   }
 }
