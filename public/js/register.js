@@ -14,7 +14,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
     
     if (response.ok) {
         alert("Inscription réussie !");
-        localStorage.setItem("userId", data.userId); // Stocker l'ID utilisateur
+        localStorage.setItem("userId", data.userId);
         window.location.href = "../html/index.html";
     } else {
         alert(data.message);

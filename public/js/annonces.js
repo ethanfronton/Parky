@@ -94,11 +94,16 @@ async function afficherAnnonces(userId = null) {
           <h3>${annonce.titre}</h3>
           <p>${annonce.description}</p>
           <p>${annonce.adresse}</p>
+          <p>${annonce.ville}</p>
           <p class="prix">${annonce.prix}€</p>
           <img src="${annonce.image}" alt="Image de l'annonce">
         `;
         if (window.location.pathname.includes("mes-annonces")) {
-          div.innerHTML += `<button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>`;
+          if (window.location.pathname.includes("mes-annonces")) {
+            div.innerHTML += `<button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>`;
+            div.innerHTML += `<button class="btn btn-warning" onclick="modifierAnnonce('${annonce._id}')">Modifier</button>`;
+          }
+          
         }
 
         container.appendChild(div);
@@ -136,5 +141,58 @@ async function supprimerAnnonce(id) {
   } catch (error) {
     console.error("Erreur lors de la suppression:", error);
     alert("Erreur lors de la suppression");
+  }
+}
+async function modifierAnnonce(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+      alert("Vous devez être connecté pour modifier une annonce.");
+      return;
+  }
+
+  // Récupère les nouvelles valeurs via un prompt (ou crée un formulaire pour une meilleure UX)
+  const nouveauTitre = prompt("Nouveau titre :");
+  const nouvelleDescription = prompt("Nouvelle description :");
+  const nouvelleAdresse = prompt("Nouvelle adresse :");
+  const nouvelleVille = prompt("Nouvelle ville :");
+  const nouveauPrix = prompt("Nouveau prix (€) :");
+  const nouvelleImage = prompt("Nouvelle URL de l'image :");
+  const nouvelleDuree = prompt("Nouvelle durée de location :");
+
+  if (!nouveauTitre || !nouvelleDescription || !nouvelleAdresse || !nouvelleVille || !nouveauPrix || !nouvelleImage || !nouvelleDuree) {
+      alert("Tous les champs doivent être remplis.");
+      return;
+  }
+
+  const annonceModifiee = {
+      titre: nouveauTitre,
+      description: nouvelleDescription,
+      adresse: nouvelleAdresse,
+      ville: nouvelleVille,
+      prix: Number(nouveauPrix),
+      image: nouvelleImage,
+      duree: nouvelleDuree
+  };
+
+  try {
+      const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(annonceModifiee)
+      });
+
+      if (response.ok) {
+          alert("Annonce modifiée avec succès !");
+          afficherAnnonces(); // Recharge les annonces mises à jour
+      } else {
+          const data = await response.json();
+          alert(`Erreur: ${data.message}`);
+      }
+  } catch (error) {
+      console.error("Erreur lors de la modification:", error);
+      alert("Erreur lors de la modification");
   }
 }
