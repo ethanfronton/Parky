@@ -234,3 +234,32 @@ async function reserverAnnonce(id) {
       alert("Erreur lors de la réservation");
   }
 }
+
+document.getElementById('searchForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+
+  const location = document.getElementById('locationInput').value.trim();
+  const price = document.getElementById('priceInput').value.trim();
+  
+  let url = `/api/annonces?`;
+  if (location) url += `lieu=${encodeURIComponent(location)}&`;
+  if (price) url += `prix_max=${price}`;
+
+  try {
+      const response = await fetch(url);
+      const annonces = await response.json();
+
+      const container = document.getElementById('annoncesContainer');
+      container.innerHTML = annonces.length
+          ? annonces.map(annonce => `
+              <div class="annonce">
+                  <h3>${annonce.titre}</h3>
+                  <p><strong>ville:</strong> ${annonce.ville}</p>
+                  <p><strong>Prix:</strong> ${annonce.prix}€</p>
+              </div>
+          `).join('')
+          : "<p>Aucune annonce trouvée</p>";
+  } catch (error) {
+      console.error("Erreur lors de la récupération des annonces :", error);
+  }
+});

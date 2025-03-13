@@ -115,12 +115,28 @@ app.get("/api/reservations", auth, async (req, res) => {
     }).populate("annonceId");
     res.json(reservations);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Erreur lors de la récupération des réservations",
-        error,
-      });
+    res.status(500).json({
+      message: "Erreur lors de la récupération des réservations",
+      error,
+    });
+  }
+});
+
+app.get("/recherche", async (req, res) => {
+  try {
+    let query = {};
+
+    if (req.query.ville) {
+      query.ville = { $regex: req.query.ville, $options: "i" }; // Recherche insensible à la casse
+    }
+    if (req.query.prix_max) {
+      query.prix = { $lte: parseInt(req.query.prix_max) };
+    }
+
+    const annonces = await Annonce.find(query);
+    res.json(annonces);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
   }
 });
 

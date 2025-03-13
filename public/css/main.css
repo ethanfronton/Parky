@@ -58,3 +58,31 @@
   cursor: pointer;
   padding: 0;
 }
+.search-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.search-input {
+  padding: 10px;
+  margin: 5px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.annonce {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+}

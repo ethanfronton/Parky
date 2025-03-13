@@ -34,21 +34,32 @@
       <h1>PARKY</h1>
       <img src="/images/background.jpg" alt="Description de l'image" />
       <div class="search-container">
-        <form action="#" method="GET">
-          <input
-            type="text"
-            class="search-input"
-            placeholder="trouve ta place..."
-          />
-          <button type="submit" class="search-button"></button>
-        </form>
+        <div class="search-container">
+          <form id="searchForm" action="/recherche" method="GET">
+            <input
+              type="text"
+              name="ville"
+              id="locationInput"
+              class="search-input"
+              placeholder="Lieu (ex: Paris, Lyon...)"
+            />
+            <input
+              type="number"
+              name="prix_max"
+              id="priceInput"
+              class="search-input"
+              placeholder="Prix max (€)"
+            />
+            <button type="submit" class="search-button">Rechercher</button>
+          </form>
+        </div>
       </div>
     </div>
-    
+
     <div class="container mt-5" id="annoncesContainer">
       <!-- Les annonces seront affichées ici -->
     </div>
-    
+
     <section id="contact">
       <h2>Contact</h2>
       <form id="contactForm">
