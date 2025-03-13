@@ -99,11 +99,13 @@ async function afficherAnnonces(userId = null) {
           <img src="${annonce.image}" alt="Image de l'annonce">
         `;
         if (window.location.pathname.includes("mes-annonces")) {
-          if (window.location.pathname.includes("mes-annonces")) {
-            div.innerHTML += `<button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>`;
-            div.innerHTML += `<button class="btn btn-warning" onclick="modifierAnnonce('${annonce._id}')">Modifier</button>`;
-          }
-          
+          div.innerHTML += `<button class="btn btn-danger" onclick="supprimerAnnonce('${annonce._id}')">Supprimer</button>`;
+          div.innerHTML += `<button class="btn btn-warning" onclick="modifierAnnonce('${annonce._id}')">Modifier</button>`;
+        } else if (
+          window.location.pathname === "/" ||
+          window.location.pathname === "/home"
+        ) {
+          div.innerHTML += `<button class="btn btn-success" onclick="reserverAnnonce('${annonce._id}')">Réserver</button>`;
         }
 
         container.appendChild(div);
@@ -146,8 +148,8 @@ async function supprimerAnnonce(id) {
 async function modifierAnnonce(id) {
   const token = localStorage.getItem("token");
   if (!token) {
-      alert("Vous devez être connecté pour modifier une annonce.");
-      return;
+    alert("Vous devez être connecté pour modifier une annonce.");
+    return;
   }
 
   // Récupère les nouvelles valeurs via un prompt (ou crée un formulaire pour une meilleure UX)
@@ -159,40 +161,76 @@ async function modifierAnnonce(id) {
   const nouvelleImage = prompt("Nouvelle URL de l'image :");
   const nouvelleDuree = prompt("Nouvelle durée de location :");
 
-  if (!nouveauTitre || !nouvelleDescription || !nouvelleAdresse || !nouvelleVille || !nouveauPrix || !nouvelleImage || !nouvelleDuree) {
-      alert("Tous les champs doivent être remplis.");
-      return;
+  if (
+    !nouveauTitre ||
+    !nouvelleDescription ||
+    !nouvelleAdresse ||
+    !nouvelleVille ||
+    !nouveauPrix ||
+    !nouvelleImage ||
+    !nouvelleDuree
+  ) {
+    alert("Tous les champs doivent être remplis.");
+    return;
   }
 
   const annonceModifiee = {
-      titre: nouveauTitre,
-      description: nouvelleDescription,
-      adresse: nouvelleAdresse,
-      ville: nouvelleVille,
-      prix: Number(nouveauPrix),
-      image: nouvelleImage,
-      duree: nouvelleDuree
+    titre: nouveauTitre,
+    description: nouvelleDescription,
+    adresse: nouvelleAdresse,
+    ville: nouvelleVille,
+    prix: Number(nouveauPrix),
+    image: nouvelleImage,
+    duree: nouvelleDuree,
   };
 
   try {
-      const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
-          method: "PUT",
+    const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(annonceModifiee),
+    });
+
+    if (response.ok) {
+      alert("Annonce modifiée avec succès !");
+      afficherAnnonces(); // Recharge les annonces mises à jour
+    } else {
+      const data = await response.json();
+      alert(`Erreur: ${data.message}`);
+    }
+  } catch (error) {
+    console.error("Erreur lors de la modification:", error);
+    alert("Erreur lors de la modification");
+  }
+}
+async function reserverAnnonce(id) {
+  const userId = localStorage.getItem("userId");
+  
+  if (!userId) {
+      alert("Vous devez être connecté pour réserver.");
+      return;
+  }
+
+  try {
+      const response = await fetch("http://localhost:3000/api/reservations", {
+          method: "POST",
           headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
           },
-          body: JSON.stringify(annonceModifiee)
+          body: JSON.stringify({ annonceId: id, userId: userId }),
       });
 
       if (response.ok) {
-          alert("Annonce modifiée avec succès !");
-          afficherAnnonces(); // Recharge les annonces mises à jour
+          alert("Annonce réservée avec succès !");
       } else {
           const data = await response.json();
           alert(`Erreur: ${data.message}`);
       }
   } catch (error) {
-      console.error("Erreur lors de la modification:", error);
-      alert("Erreur lors de la modification");
+      console.error("Erreur lors de la réservation:", error);
+      alert("Erreur lors de la réservation");
   }
 }

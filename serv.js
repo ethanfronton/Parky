@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth");
 const app = express();
 
 const auth = require("./middlewares/auth");
+const Reservation = require("./models/reservation"); // Assure-toi d'avoir un modèle pour stocker les réservations
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -69,30 +70,57 @@ app.delete("/api/annonces/:id", auth, async (req, res) => {
   }
 });
 
-app.put('/api/annonces/:id', auth, async (req, res) => {
+app.put("/api/annonces/:id", auth, async (req, res) => {
   try {
-      const annonce = await Annonce.findById(req.params.id);
+    const annonce = await Annonce.findById(req.params.id);
 
-      if (!annonce) {
-          return res.status(404).json({ message: "Annonce non trouvée" });
-      }
+    if (!annonce) {
+      return res.status(404).json({ message: "Annonce non trouvée" });
+    }
 
-      // Vérifie si l'utilisateur est bien le propriétaire
-      if (annonce.proprietaire_id.toString() !== req.user.id) {
-          return res.status(403).json({ message: "Modification non autorisée" });
-      }
+    // Vérifie si l'utilisateur est bien le propriétaire
+    if (annonce.proprietaire_id.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Modification non autorisée" });
+    }
 
-      // Mettre à jour l'annonce avec les nouvelles valeurs
-      const updatedAnnonce = await Annonce.findByIdAndUpdate(
-          req.params.id,
-          { $set: req.body },
-          { new: true, runValidators: true }
-      );
+    // Mettre à jour l'annonce avec les nouvelles valeurs
+    const updatedAnnonce = await Annonce.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
 
-      res.json(updatedAnnonce);
+    res.json(updatedAnnonce);
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Erreur serveur" });
+    console.error(error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+app.post("/api/reservations", async (req, res) => {
+  try {
+    const { annonceId, userId } = req.body;
+    const reservation = new Reservation({ annonceId, userId });
+    await reservation.save();
+    res.status(201).json({ message: "Réservation effectuée avec succès" });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur lors de la réservation", error });
+  }
+});
+
+app.get("/api/reservations", auth, async (req, res) => {
+  try {
+    const reservations = await Reservation.find({
+      userId: req.user.id,
+    }).populate("annonceId");
+    res.json(reservations);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Erreur lors de la récupération des réservations",
+        error,
+      });
   }
 });
 

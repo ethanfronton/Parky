@@ -33,9 +33,67 @@
     <div class="main-resa">
       <div class="content-resa">
         <h2>Mes réservations</h2>
+        <div id="reservationsContainer"></div>
       </div>
     </div>
 
-    <script src="../js/script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const reservationsContainer = document.getElementById(
+          "reservationsContainer"
+        );
+        const userId = localStorage.getItem("userId");
+        const token = localStorage.getItem("token");
+
+        if (!userId || !token) {
+          reservationsContainer.innerHTML =
+            "<p>Vous devez être connecté pour voir vos réservations.</p>";
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/reservations",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des réservations");
+          }
+
+          const reservations = await response.json();
+          reservationsContainer.innerHTML = "";
+
+          reservations.forEach((reservation) => {
+            const annonce = reservation.annonceId;
+            const div = document.createElement("div");
+            div.className = "reservation";
+            div.innerHTML = `
+              <h3>${annonce.titre}</h3>
+              <p>${annonce.description}</p>
+              <p>${annonce.adresse}</p>
+              <p>${annonce.ville}</p>
+              <p class="prix">${annonce.prix}€</p>
+              <img src="${annonce.image}" alt="Image de l'annonce">
+              <p>Date de réservation: ${new Date(
+                reservation.dateReservation
+              ).toLocaleDateString()}</p>
+            `;
+            reservationsContainer.appendChild(div);
+          });
+        } catch (error) {
+          console.error(
+            "Erreur lors de la récupération des réservations:",
+            error
+          );
+          reservationsContainer.innerHTML =
+            "<p>Erreur lors de la récupération des réservations.</p>";
+        }
+      });
+    </script>
   </body>
 </html>
