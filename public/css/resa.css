@@ -50,8 +50,9 @@
 }
 
 .reservation img {
-  max-width: 100%;
-  height: auto;
+  max-width: 100%; /* Maintient la largeur maximale à 100% de son conteneur */
+  height: 250px; /* Définit une hauteur fixe */
+  object-fit: cover; /* Assure que l'image est bien ajustée à la taille définie */
   border-radius: 8px;
   margin-top: 10px;
 }

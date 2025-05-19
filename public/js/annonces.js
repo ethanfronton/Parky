@@ -55,7 +55,7 @@ document
 
       if (response.ok) {
         alert("Annonce créée avec succès !");
-        afficherAnnonces();
+        window.location.href = "/html/index.html"; // Redirection vers la page d'index
       } else {
         const data = await response.json();
         alert(`Erreur: ${data.message}`);
@@ -208,58 +208,68 @@ async function modifierAnnonce(id) {
 }
 async function reserverAnnonce(id) {
   const userId = localStorage.getItem("userId");
-  
+
   if (!userId) {
-      alert("Vous devez être connecté pour réserver.");
-      return;
+    alert("Vous devez être connecté pour réserver.");
+    return;
   }
 
   try {
-      const response = await fetch("http://localhost:3000/api/reservations", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ annonceId: id, userId: userId }),
-      });
+    const response = await fetch("http://localhost:3000/api/reservations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ annonceId: id, userId: userId }),
+    });
 
-      if (response.ok) {
-          alert("Annonce réservée avec succès !");
-      } else {
-          const data = await response.json();
-          alert(`Erreur: ${data.message}`);
-      }
+    if (response.ok) {
+      alert("Annonce réservée avec succès !");
+    } else {
+      const data = await response.json();
+      alert(`Erreur: ${data.message}`);
+    }
   } catch (error) {
-      console.error("Erreur lors de la réservation:", error);
-      alert("Erreur lors de la réservation");
+    console.error("Erreur lors de la réservation:", error);
+    alert("Erreur lors de la réservation");
   }
 }
 
-document.getElementById('searchForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
+document
+  .getElementById("searchForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  const location = document.getElementById('locationInput').value.trim();
-  const price = document.getElementById('priceInput').value.trim();
-  
-  let url = `/api/annonces?`;
-  if (location) url += `lieu=${encodeURIComponent(location)}&`;
-  if (price) url += `prix_max=${price}`;
+    const location = document.getElementById("locationInput").value.trim();
+    const price = document.getElementById("priceInput").value.trim();
 
-  try {
+    let url = `/api/annonces?`;
+    if (location) url += `lieu=${encodeURIComponent(location)}&`;
+    if (price) url += `prix_max=${price}`;
+
+    try {
       const response = await fetch(url);
       const annonces = await response.json();
 
-      const container = document.getElementById('annoncesContainer');
+      console.log("Annonces récupérées :", annonces); // Ajoutez cette ligne
+
+      const container = document.getElementById("annoncesContainer");
       container.innerHTML = annonces.length
-          ? annonces.map(annonce => `
+        ? annonces
+            .map(
+              (annonce) => `
               <div class="annonce">
                   <h3>${annonce.titre}</h3>
-                  <p><strong>ville:</strong> ${annonce.ville}</p>
+                  <p><strong>Ville:</strong> ${annonce.ville}</p>
                   <p><strong>Prix:</strong> ${annonce.prix}€</p>
+                  <img src="${annonce.image}" alt="Image de l'annonce" style="max-width: 100%; height: auto;">
+                  <button class="btn btn-success" onclick="reserverAnnonce('${annonce._id}')">Réserver</button>
               </div>
-          `).join('')
-          : "<p>Aucune annonce trouvée</p>";
-  } catch (error) {
+          `
+            )
+            .join("")
+        : "<p>Aucune annonce trouvée</p>";
+    } catch (error) {
       console.error("Erreur lors de la récupération des annonces :", error);
-  }
-});
+    }
+  });

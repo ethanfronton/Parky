@@ -122,6 +122,27 @@ app.get("/api/reservations", auth, async (req, res) => {
   }
 });
 
+app.delete("/api/reservations/:id", auth, async (req, res) => {
+  try {
+    const reservation = await Reservation.findById(req.params.id);
+
+    if (!reservation) {
+      return res.status(404).json({ message: "Réservation non trouvée" });
+    }
+
+    // Vérifiez si l'utilisateur est bien le propriétaire de la réservation
+    if (reservation.userId.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Suppression non autorisée" });
+    }
+
+    await Reservation.findByIdAndDelete(req.params.id);
+    res.json({ message: "Réservation supprimée avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la suppression de la réservation :", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 app.get("/recherche", async (req, res) => {
   try {
     let query = {};

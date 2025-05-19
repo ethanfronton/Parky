@@ -83,8 +83,46 @@
               <p>Date de réservation: ${new Date(
                 reservation.dateReservation
               ).toLocaleDateString()}</p>
+              <button class="delete-btn" data-id="${
+                reservation._id
+              }">Supprimer</button>
             `;
             reservationsContainer.appendChild(div);
+          });
+
+          // Add event listeners to delete buttons
+          const deleteButtons = document.querySelectorAll(".delete-btn");
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", async (event) => {
+              const reservationId = event.target.getAttribute("data-id");
+
+              try {
+                const deleteResponse = await fetch(
+                  `http://localhost:3000/api/reservations/${reservationId}`,
+                  {
+                    method: "DELETE",
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                );
+
+                if (!deleteResponse.ok) {
+                  throw new Error(
+                    "Erreur lors de la suppression de la réservation"
+                  );
+                }
+
+                // Remove the reservation from the DOM
+                event.target.closest(".reservation").remove();
+              } catch (error) {
+                console.error(
+                  "Erreur lors de la suppression de la réservation:",
+                  error
+                );
+                alert("Impossible de supprimer la réservation.");
+              }
+            });
           });
         } catch (error) {
           console.error(

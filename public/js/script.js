@@ -48,6 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
         <p>${annonce.description}</p>
         <p>Prix: ${annonce.prix} €</p>
         <p>Ville: ${annonce.ville}</p>
+         <img src="${
+           annonce.image || "https://via.placeholder.com/150"
+         }" alt="Image de l'annonce" style="max-width: 100%; height: auto;">
+            <button class="btn btn-success" onclick="reserverAnnonce('${
+              annonce._id
+            }')">Réserver</button>
       `;
       annoncesContainer.appendChild(annonceElement);
     });

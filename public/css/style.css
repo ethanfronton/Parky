@@ -107,7 +107,9 @@ html {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  width: calc(33.333% - 20px); /* Trois annonces par ligne avec un espace de 20px */
+  width: calc(
+    33.333% - 20px
+  ); /* Trois annonces par ligne avec un espace de 20px */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
   background-color: #fff;
@@ -133,8 +135,9 @@ html {
 
 /* Style pour l'image de l'annonce */
 .annonce img {
-  max-width: 100%;
-  height: auto;
+  width: 100%; /* Assure que l'image occupe toute la largeur de son conteneur */
+  height: 200px; /* Fixe une hauteur uniforme pour toutes les images */
+  object-fit: cover; /* Recadre l'image pour qu'elle s'adapte sans déformation */
   border-radius: 4px;
   margin-top: 10px;
 }
