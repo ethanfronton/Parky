@@ -16,9 +16,14 @@ header {
 }
 
 nav.container {
+  top: 0;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
+  background-color: #8da095; /* Assurez-vous que la couleur de fond est définie */
+  position: fixed;
+  z-index: 1000;
 }
 
 .logo img {
@@ -147,4 +152,100 @@ html {
   font-weight: bold;
   color: #e74c3c;
   font-size: 1.2em;
+}
+
+/* Styles généraux pour rendre la page responsive */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* L'image occupe toute la hauteur de l'écran */
+  z-index: 1;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* L'image s'adapte sans déformation */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.image-container h1 {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  z-index: 2;
+  font-size: 4em; /* Taille ajustée pour les petits écrans */
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Styles pour les conteneurs de recherche */
+.search-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; /* Ajustement pour petits écrans */
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 2px solid #000000;
+  border-radius: 50px;
+  outline: none;
+  transition: all 0.4s ease;
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Media queries pour rendre la page responsive */
+@media (max-width: 768px) {
+  .image-container h1 {
+    font-size: 3em; /* Réduction de la taille du texte */
+  }
+
+  .search-container {
+    flex-direction: column; /* Empile les éléments sur petits écrans */
+    align-items: center;
+  }
+
+  .search-input {
+    width: 90%; /* Réduction de la largeur */
+    margin-bottom: 10px;
+  }
+
+  .search-button {
+    position: static; /* Ajustement pour éviter les chevauchements */
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-container h1 {
+    font-size: 2em; /* Réduction supplémentaire pour très petits écrans */
+  }
+
+  .search-input {
+    font-size: 14px; /* Réduction de la taille du texte */
+  }
 }

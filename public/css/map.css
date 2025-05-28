@@ -1,0 +1,6 @@
+#mapContainer {
+  height: 500px; /* Hauteur de la carte */
+  width: 100%; /* Largeur de la carte */
+  margin: 20px auto;
+  border: 1px solid #ccc;
+}
