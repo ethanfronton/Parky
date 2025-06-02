@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const path = require("path");
 const rootRoutes = require("./routes/root");
@@ -37,7 +38,33 @@ const annonceSchema = new mongoose.Schema({
   duree: { type: String, required: true },
 });
 const Annonce = mongoose.model("Annonce", annonceSchema);
+app.post("/send-email", async (req, res) => {
+  const { name, email, message } = req.body;
 
+  // Utilise les variables d'environnement pour plus de sécurité
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.MAIL_USER, // frontonethan@gmail.com
+      pass: process.env.MAIL_PASS, // App Password généré dans Google
+    },
+  });
+
+  const mailOptions = {
+    from: `"${name}" <${email}>`,
+    to: "frontonethan@gmail.com",
+    subject: `Nouveau message de ${name}`,
+    text: message,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).send("Email envoyé avec succès.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Erreur lors de l'envoi de l'email.");
+  }
+});
 app.post("/api/annonces", async (req, res) => {
   const nouvelleAnnonce = new Annonce(req.body);
   await nouvelleAnnonce.save();

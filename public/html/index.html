@@ -68,6 +68,28 @@
         <textarea id="message" placeholder="Votre message" required></textarea>
         <button type="submit">Envoyer</button>
       </form>
+      <script>
+        document.getElementById('contactForm').addEventListener('submit', async function (event) {
+          event.preventDefault();
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const message = document.getElementById('message').value;
+
+          const response = await fetch('/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, message }),
+          });
+
+          if (response.ok) {
+            alert('Email envoyé avec succès !');
+          } else {
+            alert('Erreur lors de l\'envoi de l\'email.');
+          }
+        });
+      </script>
     </section>
 
     <footer>
