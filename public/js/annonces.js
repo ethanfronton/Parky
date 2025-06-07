@@ -55,7 +55,7 @@ document
 
       if (response.ok) {
         alert("Annonce créée avec succès !");
-        window.location.href = "/html/index.html"; // Redirection vers la page d'index
+        window.location.href = "/html/index.html"; 
       } else {
         const data = await response.json();
         alert(`Erreur: ${data.message}`);
@@ -152,7 +152,7 @@ async function modifierAnnonce(id) {
     return;
   }
 
-  // Récupère les nouvelles valeurs via un prompt (ou crée un formulaire pour une meilleure UX)
+  // Récupère les nouvelles valeurs via un prompt
   const nouveauTitre = prompt("Nouveau titre :");
   const nouvelleDescription = prompt("Nouvelle description :");
   const nouvelleAdresse = prompt("Nouvelle adresse :");
@@ -206,6 +206,7 @@ async function modifierAnnonce(id) {
     alert("Erreur lors de la modification");
   }
 }
+
 async function reserverAnnonce(id) {
   const userId = localStorage.getItem("userId");
 

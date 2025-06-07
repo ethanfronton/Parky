@@ -38,15 +38,15 @@ const annonceSchema = new mongoose.Schema({
   duree: { type: String, required: true },
 });
 const Annonce = mongoose.model("Annonce", annonceSchema);
+
 app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
 
-  // Utilise les variables d'environnement pour plus de sécurité
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.MAIL_USER, // frontonethan@gmail.com
-      pass: process.env.MAIL_PASS, // App Password généré dans Google
+      user: process.env.MAIL_USER,  
+      pass: process.env.MAIL_PASS,  
     },
   });
 

@@ -11,7 +11,7 @@ const annonceSchema = new mongoose.Schema({
     proprietaire_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     image: { type: String, required: false },
     duree: { type: Number, required: true },
-    reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Liste des utilisateurs qui ont réservé
+    reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] 
 });
 
 module.exports = mongoose.model('Annonce', annonceSchema);
