@@ -12,14 +12,18 @@ const app = express();
 const auth = require("./middlewares/auth");
 const Reservation = require("./models/reservation"); // Assure-toi d'avoir un modèle pour stocker les réservations
 
-app.use(cors());
+const corsOptions = {
+  origin: ["https://parky-ajgq.onrender.com", "http://localhost:3000"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", rootRoutes);
 
 // Connexion à MongoDB
 mongoose
-  .connect("mongodb://127.0.0.1:27017/parky")
+  .connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/parky")
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB:", err));
 
@@ -45,8 +49,8 @@ app.post("/send-email", async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.MAIL_USER,  
-      pass: process.env.MAIL_PASS,  
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
     },
   });
 
@@ -189,4 +193,5 @@ app.get("/recherche", async (req, res) => {
 });
 
 app.use(authRoutes);
-app.listen(3000, () => console.log("Serveur en écoute sur le port 3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Serveur en écoute sur le port ${PORT}`));

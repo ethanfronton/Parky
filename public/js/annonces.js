@@ -45,17 +45,20 @@ document
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/annonces", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(annonce),
-      });
+      const response = await fetch(
+        "https://parky-ajgq.onrender.com/api/annonces",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(annonce),
+        }
+      );
 
       if (response.ok) {
         alert("Annonce créée avec succès !");
-        window.location.href = "/html/index.html"; 
+        window.location.href = "/html/index.html";
       } else {
         const data = await response.json();
         alert(`Erreur: ${data.message}`);
@@ -77,7 +80,9 @@ async function afficherAnnonces(userId = null) {
 
   try {
     container.innerHTML = "<p>Chargement des annonces...</p>";
-    const response = await fetch("http://localhost:3000/api/annonces");
+    const response = await fetch(
+      "https://parky-ajgq.onrender.com/api/annonces"
+    );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des annonces");
     }
@@ -125,13 +130,16 @@ async function supprimerAnnonce(id) {
   if (!confirm("Voulez-vous vraiment supprimer cette annonce ?")) return;
 
   try {
-    const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `https://parky-ajgq.onrender.com/api/annonces/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (response.ok) {
       alert("Annonce supprimée avec succès !");
@@ -185,14 +193,17 @@ async function modifierAnnonce(id) {
   };
 
   try {
-    const response = await fetch(`http://localhost:3000/api/annonces/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(annonceModifiee),
-    });
+    const response = await fetch(
+      `https://parky-ajgq.onrender.com/api/annonces/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(annonceModifiee),
+      }
+    );
 
     if (response.ok) {
       alert("Annonce modifiée avec succès !");
@@ -216,13 +227,16 @@ async function reserverAnnonce(id) {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/api/reservations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ annonceId: id, userId: userId }),
-    });
+    const response = await fetch(
+      "https://parky-ajgq.onrender.com/api/reservations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ annonceId: id, userId: userId }),
+      }
+    );
 
     if (response.ok) {
       alert("Annonce réservée avec succès !");
@@ -235,6 +249,8 @@ async function reserverAnnonce(id) {
     alert("Erreur lors de la réservation");
   }
 }
+
+const API_URL = "https://parky-ajgq.onrender.com";
 
 document
   .getElementById("searchForm")
