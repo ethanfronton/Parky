@@ -19,22 +19,17 @@ Parky est une application web permettant de publier, rechercher et réserver des
 
 ## Installation
 
-1. **Cloner le dépôt**
-   ```bash
-   git clone https://github.com/votre-utilisateur/parky.git
-   cd parky
-   ```
-2. **Installer les dépendances**
+1. **Installer les dépendances**
    ```bash
    npm install
    ```
-3. **Configurer la base de données**
+2. **Configurer la base de données**
    - Renommer le fichier `.env.example` en `.env`
    - Ajouter votre URI MongoDB dans le fichier `.env`
    ```env
    MONGODB_URI=votre_uri_mongodb
    ```
-4. **Lancer l’application**
+3. **Lancer l’application**
    ```bash
    npm start
    ```
@@ -43,10 +38,6 @@ Parky est une application web permettant de publier, rechercher et réserver des
 ## Contribuer
 
 Les contributions sont les bienvenues ! Pour proposer une amélioration ou signaler un bug, ouvrez une issue sur GitHub.
-
-## Auteurs
-
-- **Votre Nom** - Développeur principal - [votre-utilisateur](https://github.com/votre-utilisateur)
 
 ## License
 
