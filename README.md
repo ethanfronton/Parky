@@ -27,7 +27,7 @@ Parky est une application web permettant de publier, rechercher et réserver des
    - Renommer le fichier `.env.example` en `.env`
    - Ajouter votre URI MongoDB dans le fichier `.env`
    ```env
-   MONGODB_URI=votre_uri_mongodb
+   MONGODB_URI= mongodb://127.0.0.1:27017/parky
    ```
 3. **Lancer l’application**
    ```bash
